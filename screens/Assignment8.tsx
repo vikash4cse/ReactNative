@@ -1,56 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Button, StyleSheet, SafeAreaView } from 'react-native';
 
-const Assignment8 = () => {
+// 🔁 Regular Child - Always re-renders
+const RegularChild = ({ label }) => {
+  console.log('🔁 RegularChild rendered');
+  return <Text style={styles.child}>Regular: {label}</Text>;
+};
+
+const MemoizedChild = React.memo(({ label }) => {
+  console.log('✅ MemoizedChild rendered');
+  return <Text style={styles.child}>Memoized: {label}</Text>;
+});
+
+export default function Assignment8() {
   const [count, setCount] = useState(0);
-  const increment = () => setCount(count + 1);
-  const decrement = () => setCount(count - 1);
+  const [text, setText] = useState('Hello');
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.countText}>{count}</Text>
-      <View style={styles.buttonContainer}>
-        <CustomButton title="+" onPress={increment} />
-        <CustomButton title="-" onPress={decrement} />
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>React.memo Demo</Text>
+
+      <Text style={styles.counter}>Counter: {count}</Text>
+      <Button title="Increment Counter" onPress={() => setCount(count + 1)} />
+
+      <View style={styles.childBox}>
+        <RegularChild label={text} />
+        <MemoizedChild label={text} />
       </View>
-    </View>
-  );
-};
 
-export default Assignment8;
-
-const CustomButton = ({ title, onPress }) => {
-  return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
+      <Button
+        title="Change Text Prop"
+        onPress={() => setText(text === 'Hello' ? 'World' : 'Hello')}
+        color="#6a0dad"
+      />
+    </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 24,
+    justifyContent: 'flex-start',
+    backgroundColor: '#f0f0f0',
   },
-  // Counter
-  countText: {
-    fontSize: 64,
-    marginBottom: 40,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
-  buttonContainer: {
-    flexDirection: 'row',
-    gap: 20,
+  counter: {
+    fontSize: 20,
+    marginVertical: 8,
   },
-  button: {
-    backgroundColor: '#007BFF',
-    width: 100,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
+  childBox: {
+    marginTop: 24,
+    padding: 16,
+    backgroundColor: '#fff',
     borderRadius: 8,
+    elevation: 2,
   },
-  buttonText: {
-    color: '#fff',
+  child: {
     fontSize: 18,
+    marginVertical: 4,
   },
 });

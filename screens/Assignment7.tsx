@@ -1,56 +1,66 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+
+const cards = [
+  { id: 1, title: 'Card 1', description: 'This is the first card.' },
+  { id: 2, title: 'Card 2', description: 'This is the second card.' },
+  { id: 3, title: 'Card 3', description: 'This is the third card.' },
+  { id: 4, title: 'Card 4', description: 'This is the fourth card.' },
+  { id: 5, title: 'Card 5', description: 'This is the fifth card.' },
+  { id: 6, title: 'Card 6', description: 'This is the sixth card.' },
+];
 
 const Assignment7 = () => {
-  const [count, setCount] = useState(0);
-  const increment = () => setCount(count + 1);
-  const decrement = () => setCount(count - 1);
   return (
-    <View style={styles.container}>
-      <Text style={styles.countText}>{count}</Text>
-      <View style={styles.buttonContainer}>
-        <CustomButton title="+" onPress={increment} />
-        <CustomButton title="-" onPress={decrement} />
-      </View>
-    </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.grid}>
+          {cards.map(card => (
+            <View key={card.id} style={styles.card}>
+              <Text style={styles.title}>{card.title}</Text>
+              <Text style={styles.description}>{card.description}</Text>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 export default Assignment7;
 
-const CustomButton = ({ title, onPress }) => {
-  return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
-  );
-};
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: '#F8F9FA',
   },
-  // Counter
-  countText: {
-    fontSize: 64,
-    marginBottom: 40,
+  scrollContainer: {
+    padding: 16,
   },
-  buttonContainer: {
+  grid: {
     flexDirection: 'row',
-    gap: 20,
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
   },
-  button: {
-    backgroundColor: '#007BFF',
-    width: 100,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
+  card: {
+    backgroundColor: '#fff',
+    width: '48%',
+    marginBottom: 16,
     borderRadius: 8,
+    padding: 12,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3, // for Android shadow
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 6,
+  },
+  description: {
+    fontSize: 14,
+    color: '#555',
   },
 });

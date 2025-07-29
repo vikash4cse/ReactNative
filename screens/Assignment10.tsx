@@ -1,30 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { Text, Switch, StyleSheet, SafeAreaView } from 'react-native';
 
-const Assignment10 = () => {
-  const [count, setCount] = useState(0);
-  const increment = () => setCount(count + 1);
-  const decrement = () => setCount(count - 1);
+export default function Assignment10() {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  // Dynamic styles based on dark mode state
+  const backgroundColor = isDarkMode ? '#121212' : '#FFFFFF';
+  const textColor = isDarkMode ? '#FFFFFF' : '#000000';
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.countText}>{count}</Text>
-      <View style={styles.buttonContainer}>
-        <CustomButton title="+" onPress={increment} />
-        <CustomButton title="-" onPress={decrement} />
-      </View>
-    </View>
-  );
-};
+    <SafeAreaView style={[styles.container, { backgroundColor }]}>
+      <Text style={[styles.text, { color: textColor }]}>
+        {isDarkMode ? 'Dark Mode is On' : 'Light Mode is On'}
+      </Text>
 
-export default Assignment10;
-
-const CustomButton = ({ title, onPress }) => {
-  return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
+      <Switch
+        value={isDarkMode}
+        onValueChange={value => setIsDarkMode(value)}
+        thumbColor={isDarkMode ? '#f5dd4b' : '#f4f3f4'}
+        trackColor={{ false: '#767577', true: '#81b0ff' }}
+      />
+    </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -32,25 +30,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  // Counter
-  countText: {
-    fontSize: 64,
-    marginBottom: 40,
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    gap: 20,
-  },
-  button: {
-    backgroundColor: '#007BFF',
-    width: 100,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 8,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
+  text: {
+    fontSize: 20,
+    marginBottom: 20,
   },
 });
